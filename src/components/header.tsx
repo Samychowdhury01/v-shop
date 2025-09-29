@@ -23,7 +23,7 @@ export function Header() {
   return (
     <>
       {/* Top Banner */}
-      <div className="bg-black text-white text-center py-2 text-sm font-medium">
+      <div className="bg-red-800 text-white text-center py-2 text-sm font-medium">
         CASH ON DELIVERY/CARD PAYMENT AT YOUR DOORSTEP
       </div>
 

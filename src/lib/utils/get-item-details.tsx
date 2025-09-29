@@ -1,5 +1,4 @@
-import { CartItem } from "@/schemas/cart";
-
+import { CartItem } from "@/types/cart";
 
 export function getItemDetails(item: CartItem): string {
   const details = [];

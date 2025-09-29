@@ -14,7 +14,8 @@ import {
   ProductOptionsSelector,
   validateProductSelection,
 } from "./product-options-selector"
-import { Product, ProductSelection } from "./product-options-selector";
+import { ProductSelection } from "./product-options-selector";
+import { Product } from "@/types/products";
 
 interface AddToCartModalProps {
   isOpen: boolean;
@@ -60,7 +61,7 @@ export function AddToCartModal({
         productId: product.id,
         name: product.name,
         price: product.price,
-        image: product.image,
+        image: product.images[0],
         flavor: productSelection.flavor,
         color: productSelection.color,
         option: productSelection.option,
@@ -84,7 +85,7 @@ export function AddToCartModal({
           <div className="flex items-center space-x-4">
             <div className="relative w-20 h-20">
               <Image
-                src={product.image}
+                src={product.images[0]}
                 alt={product.name}
                 fill
                 className="object-cover rounded"

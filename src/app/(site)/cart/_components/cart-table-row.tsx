@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { getItemDetails } from "@/lib/utils/get-item-details";
-import { CartItem } from "@/schemas/cart";
+import { CartItem } from "@/types/cart";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { QuantitySelector } from "./quantity-selector";

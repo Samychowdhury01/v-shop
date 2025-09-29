@@ -9,21 +9,33 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { LayoutGrid, Grid, List } from "lucide-react";
+import { LayoutGrid, Grid, Grid3x2 } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export function ProductControls() {
-  const [itemsPerPage, setItemsPerPage] = useState("18");
-  const [viewType, setViewType] = useState("grid");
   const [sortBy, setSortBy] = useState("latest");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  const handleItemsPerPageChange = (value: string) => {
-    setItemsPerPage(value);
-  };
+  const viewType = searchParams.get("view") || "grid";
 
   const handleViewChange = (value: string) => {
-    if (value) {
-      setViewType(value);
-    }
+    if (!value) return;
+
+    const params = new URLSearchParams(searchParams);
+    params.set("view", value);
+
+    // Set columns based on view type
+    const colsMap: Record<string, string> = {
+      "grid-large": "2",
+      grid: "3",
+      list: "4",
+    };
+
+    params.set("cols", colsMap[value] || "3");
+
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   const handleSortChange = (value: string) => {
@@ -32,28 +44,7 @@ export function ProductControls() {
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex items-center space-x-4">
-        <span className="text-sm text-gray-600">Show:</span>
-        <ToggleGroup
-          type="single"
-          value={itemsPerPage}
-          onValueChange={handleItemsPerPageChange}
-          className="flex items-center space-x-1"
-        >
-          {["9", "12", "18", "24"].map((num) => (
-            <ToggleGroupItem
-              key={num}
-              value={num}
-              aria-label={`Show ${num} items`}
-              className="px-3 py-1 text-sm data-[state=on]:bg-gray-700 data-[state=on]:text-white"
-            >
-              {num}
-            </ToggleGroupItem>
-          ))}
-        </ToggleGroup>
-      </div>
-
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center ml-auto space-x-4">
         <ToggleGroup
           type="single"
           value={viewType}
@@ -68,10 +59,10 @@ export function ProductControls() {
             <LayoutGrid className="h-4 w-4" />
           </ToggleGroupItem>
           <ToggleGroupItem value="grid" aria-label="Grid view" size="sm">
-            <Grid className="h-4 w-4" />
+            <Grid3x2 className="h-4 w-4" />
           </ToggleGroupItem>
           <ToggleGroupItem value="list" aria-label="List view" size="sm">
-            <List className="h-4 w-4" />
+            <Grid className="h-4 w-4" />
           </ToggleGroupItem>
         </ToggleGroup>
 

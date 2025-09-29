@@ -8,10 +8,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CartItem } from "@/schemas/cart";
+import { CartItem } from "@/types/cart";
 import Link from "next/link";
 import { CartTableRow } from "./cart-table-row";
-
 
 interface CartTableProps {
   cartItems: CartItem[];
@@ -67,9 +66,7 @@ export function CartTable({
             Clear Cart
           </Button>
         </div>
-        <div className="text-sm text-gray-500">
-          {totalItems} items in cart
-        </div>
+        <div className="text-sm text-gray-500">{totalItems} items in cart</div>
       </div>
     </div>
   );
