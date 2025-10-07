@@ -7,7 +7,7 @@ export interface Product {
   description?: string;
   price: number;
   discountPrice?: number | null;
-  images: string[];
+  image: string;
   category: {
     slug: string;
   };

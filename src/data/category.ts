@@ -1,15 +1,30 @@
 export const categories = [
   {
-    "id": "cat_001",
-    "name": "Vape Devices",
-    "slug": "vape-devices",
-    "description": "Explore a wide range of vape devices including pod systems, vape pens, and advanced mods for every vaping style."
+    "id": "cat_002",
+    "name": "Disposable",
+    "slug": "disposable",
+    "description": "Premium e-liquids available in various flavors and nicotine strengths, including freebase and nicotine salts.",
+    "brands": [
+      {
+        "name": "Al FAKHER",
+        "slug": "al-fakher", 
+      },
+      {
+        "name": "ELF BAR DISPOSABLE",
+        "slug": "elf-bar-disposable",
+      },
+      {
+        "name": "FUMMO DISPOSABLE",
+        "slug": "fummo-disposable",
+      },
+
+    ]
   },
   {
-    "id": "cat_002",
-    "name": "E-Liquids",
-    "slug": "e-liquids",
-    "description": "Premium e-liquids available in various flavors and nicotine strengths, including freebase and nicotine salts."
+    "id": "cat_001",
+    "name": "Juul",
+    "slug": "juul",
+    "description": "Explore a wide range of vape devices including pod systems, vape pens, and advanced mods for every vaping style."
   },
   {
     "id": "cat_003",

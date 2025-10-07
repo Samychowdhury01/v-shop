@@ -19,7 +19,7 @@ export function ProductCard({ product }: ProductCardProps) {
           )}
           <div className="relative w-full h-64 overflow-hidden">
             <Image
-              src={product.images[0] || "/placeholder.svg"}
+              src={product.image|| "/placeholder.svg"}
               alt={product.name}
               fill
               className="object-cover  transition-transform duration-700 group-hover:scale-105"

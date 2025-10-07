@@ -23,8 +23,7 @@ const sidebarProducts = [
   },
 ];
 
-export default async function ProductsPage({ searchParams }) {
-  const resolvedSearchParams = await searchParams
+export default async function ProductsPage() {
   return (
     <ProductPageLayout
       title="Juul Pods: The Ultimate Guide – It's Pronounced 'J-u-u-l' not, 'Y'all'"
@@ -35,7 +34,7 @@ export default async function ProductsPage({ searchParams }) {
       ]}
       sidebarProducts={sidebarProducts}
     >
-      <ProductGrid products={products} searchParams={resolvedSearchParams} />
+      <ProductGrid products={products} />
     </ProductPageLayout>
   );
 }

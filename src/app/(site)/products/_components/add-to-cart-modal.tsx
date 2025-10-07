@@ -61,7 +61,7 @@ export function AddToCartModal({
         productId: product.id,
         name: product.name,
         price: product.price,
-        image: product.images[0],
+        image: product.image,
         flavor: productSelection.flavor,
         color: productSelection.color,
         option: productSelection.option,
@@ -85,7 +85,7 @@ export function AddToCartModal({
           <div className="flex items-center space-x-4">
             <div className="relative w-20 h-20">
               <Image
-                src={product.images[0]}
+                src={product.image}
                 alt={product.name}
                 fill
                 className="object-cover rounded"
