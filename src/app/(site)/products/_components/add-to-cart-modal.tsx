@@ -58,10 +58,10 @@ export function AddToCartModal({
     for (let i = 0; i < quantity; i++) {
       addToCart({
         id: Math.random().toString(),
-        productId: product.id,
-        name: product.name,
+        productId: product._id,
+        name: product.productName,
         price: product.price,
-        image: product.image,
+        image: product.thumbnailImage,
         flavor: productSelection.flavor,
         color: productSelection.color,
         option: productSelection.option,
@@ -74,6 +74,7 @@ export function AddToCartModal({
     setCartSheetOpen(true);
   };
 
+ 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
@@ -85,15 +86,15 @@ export function AddToCartModal({
           <div className="flex items-center space-x-4">
             <div className="relative w-20 h-20">
               <Image
-                src={product.image}
-                alt={product.name}
+                src={product.thumbnailImage}
+                alt={product.productName}
                 fill
                 className="object-cover rounded"
                 sizes="80px"
               />
             </div>
             <div className="flex-1">
-              <h3 className="font-medium text-gray-900">{product.name}</h3>
+              <h3 className="font-medium text-gray-900">{product.productName}</h3>
               <p className="text-lg font-bold text-black">
                 {product.price} AED
               </p>

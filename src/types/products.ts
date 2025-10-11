@@ -1,29 +1,55 @@
 // types/product.ts
 
 export interface Product {
-  id: string;
+  _id: string;
+  productName: string;
   slug: string;
-  name: string;
-  description?: string;
+  soldOut: boolean;
+  thumbnailImage: string;
+  productShortDescription: string;
   price: number;
-  discountPrice?: number | null;
-  image: string;
-  category: {
-    slug: string;
+  flavours: Array<Flavour>;
+  pointDescription: Array<{
+    label: string;
+    value: string;
+  }>;
+  productDescription: string;
+  featurePoints: Array<{
+    label: string;
+    value: string;
+  }>;
+  availableFlavorsPoints: Array<{
+    label: string;
+    value: string;
+  }>;
+  whyYouShouldBuyPoints: Array<{
+    label: string;
+    value: string;
+  }>;
+  whereToBuyShortDescription: string;
+  faq: Array<{
+    question: string;
+    answer: string;
+  }>;
+  offer: {
+    isActive: boolean;
+    offerPrice: number;
   };
-  shortDescription: string;
-  brand?: string;
-  specifications?: string[];
-  flavors?: string[];
-  isOnSale?: boolean;
-  faqs: Faq[];
-  colors?: string[];
-  options?: string[];
-  createdAt?: string;
-  updatedAt?: string;
+  reviews: Array<{
+    user: string;
+    rating: number;
+    comment: string;
+  }>;
+  // Additional fields for context
+  category?: string;
+  categorySlug?: string;
+  brandName?: string;
+  brandSlug?: string;
 }
 
-type Faq = {
-  question: string;
-  answer: string;
-};
+
+export interface Flavour {
+    flavor: string;
+    flavorImage: string;
+    stock: number;
+  };

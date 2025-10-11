@@ -8,25 +8,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Flavour, Product } from "@/types/products";
 
 interface ProductOptionsSelectorProps {
-  productOptions: ProductOptions;
+  productOptions: Product;
   onSelectionChange: (selection: ProductSelection) => void;
   resetTrigger?: number;
 }
 
 export interface ProductOptions {
-  flavors?: string[];
+  flavors?: Flavour[];
   colors?: string[];
   options?: string[];
   nicotineLevels?: string[];
-}
-
-export interface Product extends ProductOptions {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
 }
 
 export interface ProductSelection {
@@ -45,7 +39,7 @@ export function ProductOptionsSelector({
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedNicotineLevel, setSelectedNicotineLevel] = useState("");
-
+console.log(productOptions, "opt")
   // Reset selections when resetTrigger changes
   useEffect(() => {
     if (resetTrigger > 0) {
@@ -69,19 +63,19 @@ export function ProductOptionsSelector({
   return (
     <div className="space-y-4">
       {/* Flavor Selection */}
-      {productOptions.flavors && productOptions.flavors.length > 0 && (
+      {productOptions.flavours && productOptions.flavours.length > 0 && (
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700">
             Flavors <span className="text-red-500">*</span>
           </label>
           <Select value={selectedFlavor} onValueChange={setSelectedFlavor}>
-            <SelectTrigger>
+            <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a flavor" />
             </SelectTrigger>
-            <SelectContent>
-              {productOptions.flavors.map((flavor) => (
-                <SelectItem key={flavor} value={flavor}>
-                  {flavor}
+            <SelectContent className="w-full">
+              {productOptions.flavours.map((flavor) => (
+                <SelectItem key={flavor.flavor} value={flavor.flavor}>
+                  {flavor.flavor}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -161,21 +155,21 @@ export function ProductOptionsSelector({
 
 // Export validation utility
 export function validateProductSelection(
-  productOptions: ProductOptions,
+  product: Product,
   selection: ProductSelection
 ): boolean {
   return (
-    (!productOptions.flavors ||
-      productOptions.flavors.length === 0 ||
+    (!product.flavours ||
+      product.flavours.length === 0 ||
       !!selection.flavor) &&
-    (!productOptions.colors ||
-      productOptions.colors.length === 0 ||
+    (!product.colors ||
+      product.colors.length === 0 ||
       !!selection.color) &&
-    (!productOptions.options ||
-      productOptions.options.length === 0 ||
+    (!product.options ||
+      product.options.length === 0 ||
       !!selection.option) &&
-    (!productOptions.nicotineLevels ||
-      productOptions.nicotineLevels.length === 0 ||
+    (!product.nicotineLevels ||
+      product.nicotineLevels.length === 0 ||
       !!selection.nicotineLevel)
   );
 }

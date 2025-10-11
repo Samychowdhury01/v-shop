@@ -1,8 +1,13 @@
+import { Product } from "./products";
+
+export interface Brand {
+  name: string;
+  slug: string;
+  types: Product[];
+}
+
 export interface Category {
-  id: string
-  name: string
-  slug: string
-  description: string
-  isChild?: boolean
-  parentCategoryId?: string
+  category: string;
+  slug: string;
+  brands: Brand[];
 }

@@ -1,11 +1,11 @@
 export function Footer() {
   return (
-    <footer className="bg-gray-800 text-white py-12">
+    <footer className="bg-gray-900 text-white py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <img src="/vape-store-skull-logo-red.jpg" alt="Vape Dubai Hub" className="h-12 w-12" />
+            <img src="/logo.png" alt="Vape Dubai Hub" className="h-12 w-12" />
             <div className="text-sm text-gray-300">
               <p>Vape Dubai Hub, Dragon Mart, Al Awir</p>
               <p>Road, Dubai International City, Dubai,</p>

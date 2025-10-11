@@ -1,4 +1,5 @@
-import { products } from "@/data/products";
+
+import { fetchProducts } from "@/lib/utils/fetch-products";
 import { ProductGrid } from "./_components/product-grid";
 import { ProductPageLayout } from "./_components/product-page-layout";
 
@@ -24,13 +25,16 @@ const sidebarProducts = [
 ];
 
 export default async function ProductsPage() {
+  // Fetch all products from API
+  const products = await fetchProducts();
+
   return (
     <ProductPageLayout
-      title="Juul Pods: The Ultimate Guide – It's Pronounced 'J-u-u-l' not, 'Y'all'"
-      description="Welcome to your no-bs guide to Juul Pods – defining simplicity as easy as using a toothpick. As technology progresses to grow with time, their inherent change and features also casts reflection on the contemporary culture, their needs and aspirations, which also evolves with time."
+      title="All Products - Premium Vape Collection in UAE"
+      description="Explore our complete collection of premium vaping products including disposable vapes, JUUL pods, and e-liquids from top brands like Al Fakher, ELF BAR, and FUMMO. Fast delivery across Dubai and UAE."
       breadcrumbs={[
         { label: "Home", href: "/" },
-        { label: "JUUL", href: "/products/juul" },
+        { label: "Products", href: "/products" },
       ]}
       sidebarProducts={sidebarProducts}
     >

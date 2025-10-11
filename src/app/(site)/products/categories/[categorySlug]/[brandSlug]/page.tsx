@@ -5,6 +5,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { ProductPageLayout } from "../../../_components/product-page-layout";
 import { ProductGrid } from "../../../_components/product-grid";
+import { fetchProductsByBrand } from "@/lib/utils/fetch-products";
 
 type BrandProductsPageProps = {
   params: Promise<{
@@ -15,6 +16,7 @@ type BrandProductsPageProps = {
 
 // Fetch product data from JSON file
 async function getProductData() {
+
   const filePath = path.join(process.cwd(), 'public', 'products.json');
   const fileContents = await fs.readFile(filePath, 'utf8');
   return JSON.parse(fileContents);
@@ -23,7 +25,7 @@ async function getProductData() {
 // Generate static params for all category/brand combinations
 export async function generateStaticParams() {
   const data = await getProductData();
-  
+
   const params: { categorySlug: string; brandSlug: string }[] = [];
   
   data.forEach((category: any) => {
@@ -63,7 +65,7 @@ export default async function BrandProductsPage({
   params,
 }: BrandProductsPageProps) {
   const { categorySlug, brandSlug } = await params;
-  
+  const brandProducts = await fetchProductsByBrand(categorySlug, brandSlug);
   // Fetch product data
   const data = await getProductData();
   

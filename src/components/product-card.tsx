@@ -12,15 +12,15 @@ export function ProductCard({ product }: ProductCardProps) {
     <>
       <div className="group relative bg-card border border-border rounded-xl overflow-hidden hover:shadow-xl hover:shadow-black/5 transition-all duration-500 hover:-translate-y-1">
         <div className="relative">
-          {product.isOnSale && (
+          {product.offer.isActive && (
             <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full z-10">
               SALE
             </div>
           )}
           <div className="relative w-full h-64 overflow-hidden">
             <Image
-              src={product.image|| "/placeholder.svg"}
-              alt={product.name}
+              src={product.thumbnailImage|| "/placeholder.svg"}
+              alt={product.productName}
               fill
               className="object-cover  transition-transform duration-700 group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -34,19 +34,25 @@ export function ProductCard({ product }: ProductCardProps) {
             href={`/products/${product.slug}`}
             className="text-sm font-medium text-gray-900 mb-2 line-clamp-2 leading-tight"
           >
-            {product.name}
+            {product.productName}
           </Link>
-
+          
+          {product.productShortDescription && (
+            <p className="text-xs text-gray-600 mb-3 line-clamp-3 leading-relaxed">
+              {product.productShortDescription}
+            </p>
+          )}
+          
           <div className="flex items-center justify-between">
-            {product.discountPrice ? (
+            {product.offer.isActive ? (
               <div className="flex items-center space-x-2">
-                {product.discountPrice && (
+                {product.offer.offerPrice && (
                   <span className="text-sm text-gray-400 line-through">
                     {product.price} AED
                   </span>
                 )}
                 <span className="text-lg font-bold text-black">
-                  {product.discountPrice} AED
+                  {product.offer.offerPrice} AED
                 </span>
               </div>
             ) : (

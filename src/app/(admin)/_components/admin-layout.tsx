@@ -12,7 +12,7 @@ import { LayoutDashboard, Package, FolderTree, ShoppingCart, LogOut, Menu, X } f
 const navigation = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   { name: "Products", href: "/admin/products", icon: Package },
-  { name: "Categories", href: "/admin/categories", icon: FolderTree },
+  // { name: "Categories", href: "/admin/categories", icon: FolderTree },
   { name: "Orders", href: "/admin/orders", icon: ShoppingCart },
 ]
 
@@ -87,16 +87,11 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       {/* Main content */}
       <div className="lg:pl-64">
         {/* Top bar */}
-        <header className="sticky top-0 z-30 bg-white border-b border-slate-200 px-4 py-4 lg:px-8">
+        <header className="sticky top-0 z-30 bg-white border-b border-slate-200 px-4 py-4 lg:px-8 sm:hidden">
           <div className="flex items-center justify-between">
             <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setSidebarOpen(true)}>
               <Menu className="h-5 w-5" />
             </Button>
-            <div className="flex-1 lg:flex-none">
-              <h2 className="text-lg font-semibold text-slate-900">
-                {navigation.find((item) => item.href === pathname)?.name || "Admin"}
-              </h2>
-            </div>
           </div>
         </header>
 

@@ -35,7 +35,7 @@ export function Header() {
             <div className="flex items-center">
               <div className="relative w-12 h-12">
                 <Image
-                  src="/vape-store-skull-logo-red.jpg"
+                  src="/logo.png"
                   alt="Vape Dubai Hub"
                   fill
                   className="object-cover"
