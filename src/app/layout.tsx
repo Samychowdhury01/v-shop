@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
 import { AgeVerificationDialog } from "@/components/age-verification-dialog";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +32,7 @@ export default function RootLayout({
       >
         <Suspense fallback={null}>
           <AgeVerificationDialog />
+          <Toaster />
         </Suspense>
         {children}
       </body>

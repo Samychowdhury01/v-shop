@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState } from "react";
 import Image from "next/image";
 import {
@@ -13,7 +13,7 @@ import { useCart } from "@/lib/provider/cart-context";
 import {
   ProductOptionsSelector,
   validateProductSelection,
-} from "./product-options-selector"
+} from "./product-options-selector";
 import { ProductSelection } from "./product-options-selector";
 import { Product } from "@/types/products";
 
@@ -54,27 +54,34 @@ export function AddToCartModal({
       return;
     }
 
-    // Add the item to cart with the specified quantity
-    for (let i = 0; i < quantity; i++) {
-      addToCart({
-        id: Math.random().toString(),
-        productId: product._id,
-        name: product.productName,
-        price: product.price,
-        image: product.thumbnailImage,
-        flavor: productSelection.flavor,
-        color: productSelection.color,
-        option: productSelection.option,
-        nicotineLevel: productSelection.nicotineLevel,
-      });
+    // Create a unique key based on product details
+    const uniqueKey = `${product._id}-${productSelection.flavor || ""}-${
+      productSelection.color || ""
+    }-${productSelection.option || ""}-${productSelection.nicotineLevel || ""}`;
+
+    const orderObject = {
+      id: uniqueKey, // Use the unique key as ID
+      productId: product._id,
+      name: product.productName,
+      price: product?.offer?.isActive
+        ? product?.offer?.offerPrice
+        : product.price,
+      image: product.thumbnailImage,
+      flavor: productSelection.flavor,
+      color: productSelection.color,
+      option: productSelection.option,
+      nicotineLevel: productSelection.nicotineLevel,
+      quantity: quantity, // Pass the quantity directly
     }
+    
+    // Add the item to cart with the specified quantity
+    addToCart(orderObject);
 
     onClose();
     resetSelections();
     setCartSheetOpen(true);
   };
 
- 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
@@ -94,7 +101,9 @@ export function AddToCartModal({
               />
             </div>
             <div className="flex-1">
-              <h3 className="font-medium text-gray-900">{product.productName}</h3>
+              <h3 className="font-medium text-gray-900">
+                {product.productName}
+              </h3>
               <p className="text-lg font-bold text-black">
                 {product.price} AED
               </p>

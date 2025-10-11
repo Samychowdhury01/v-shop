@@ -45,11 +45,14 @@ export interface Product {
   categorySlug?: string;
   brandName?: string;
   brandSlug?: string;
+  options?: string[];
+  colors?: string[];
+  nicotineLevels?: string[];
 }
 
-
 export interface Flavour {
-    flavor: string;
-    flavorImage: string;
-    stock: number;
-  };
+  flavor: string;
+  flavorImage: string;
+  stock: number;
+}
+

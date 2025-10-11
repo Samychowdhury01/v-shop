@@ -1,3 +1,4 @@
+import { CheckoutFormData } from "@/schemas/checkout"
 
 export interface Order {
   id: string
@@ -12,4 +13,8 @@ export interface Order {
   total: number
   status: "pending" | "processing" | "shipped" | "delivered" | "cancelled"
   createdAt: string
+}
+
+export interface OrderPayload extends Omit<CheckoutFormData, 'agreeToTerms'> {
+  orderItems: CheckoutFormData['orderItems'];
 }

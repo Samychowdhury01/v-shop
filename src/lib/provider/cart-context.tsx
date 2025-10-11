@@ -18,7 +18,7 @@ interface CartItem {
 interface CartContextType {
   cartItems: CartItem[]
   isCartSheetOpen: boolean
-  addToCart: (item: Omit<CartItem, 'quantity'>) => void
+  addToCart: (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => void
   updateCartQuantity: (id: string, quantity: number) => void
   removeCartItem: (id: string) => void
   setCartSheetOpen: (open: boolean) => void
@@ -43,7 +43,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  // Save cart to localStorage whenever cartItems changes (but not on initial load)
+  // Save cart to localStorage whenever cartItems changes
   useEffect(() => {
     try {
       localStorage.setItem('vape-cart', JSON.stringify(cartItems))
@@ -52,17 +52,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [cartItems])
 
-  const addToCart = useCallback((item: Omit<CartItem, 'quantity'>) => {
+  const addToCart = useCallback((item: Omit<CartItem, 'quantity'> & { quantity?: number }) => {
     setCartItems(prev => {
+      // Check if an item with the same ID (same product and options) exists
       const existingItem = prev.find(cartItem => cartItem.id === item.id)
+      
       if (existingItem) {
+        // If item exists, add the quantity to existing quantity
         return prev.map(cartItem =>
           cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            ? { ...cartItem, quantity: cartItem.quantity + (item.quantity || 1) }
             : cartItem
         )
       }
-      return [...prev, { ...item, quantity: 1 }]
+      
+      // If item doesn't exist, add as new item with specified quantity
+      return [...prev, { ...item, quantity: item.quantity || 1 }]
     })
   }, [])
 

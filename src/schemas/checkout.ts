@@ -1,4 +1,18 @@
+// @/schemas/checkout.ts
 import { z } from "zod";
+
+export const cartItemSchema = z.object({
+  id: z.string(),
+  productId: z.string(),
+  name: z.string(),
+  price: z.number(),
+  image: z.string(),
+  flavor: z.string().optional(),
+  color: z.string().optional(),
+  option: z.string().optional(),
+  nicotineLevel: z.string().optional(),
+  quantity: z.number(),
+});
 
 export const checkoutFormSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -10,19 +24,16 @@ export const checkoutFormSchema = z.object({
   stateCounty: z.string().optional(),
   phone: z.string().min(1, "Phone is required"),
   email: z.string().email("Invalid email address"),
-  shipToDifferentAddress: z.boolean().default(false),
+  shipToDifferentAddress: z.boolean(),
   orderNotes: z.string().optional(),
   agreeToTerms: z.boolean().refine((val) => val === true, {
     message: "You must agree to the terms and conditions",
   }),
+  orderItems: z.array(cartItemSchema),
+  subtotal: z.number(),
+  deliveryCharge: z.number(),
+  total: z.number(),
 });
 
+export type CartItem = z.infer<typeof cartItemSchema>;
 export type CheckoutFormData = z.infer<typeof checkoutFormSchema>;
-
-export interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-}
