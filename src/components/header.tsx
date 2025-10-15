@@ -1,11 +1,11 @@
 // components/header.tsx
 "use client";
-import { Search, User, ShoppingCart } from "lucide-react";
+import {  ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { useCart } from "@/lib/provider/cart-context";
 import { ShoppingCartSheet } from "@/app/(site)/products/_components/shopping-cart-sheet";
+import { ProductSearch } from "./search-box";
 
 export function Header() {
   const {
@@ -44,26 +44,7 @@ export function Header() {
             </div>
 
             {/* Search Bar */}
-            <div className="flex-1 max-w-2xl mx-8">
-              <div className="relative">
-                <Input
-                  type="text"
-                  placeholder="Search for products"
-                  className="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-md"
-                />
-                <div className="absolute right-0 top-0 h-full flex items-center">
-                  <select className="bg-gray-100 border-l border-gray-300 px-3 py-2 text-sm text-gray-600 rounded-r-md">
-                    <option>SELECT CATEGORY</option>
-                  </select>
-                  <Button
-                    size="sm"
-                    className="ml-2 bg-gray-600 hover:bg-gray-700"
-                  >
-                    <Search className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
+            <ProductSearch />
 
             <ShoppingCartSheet
               cartItems={cartItems}

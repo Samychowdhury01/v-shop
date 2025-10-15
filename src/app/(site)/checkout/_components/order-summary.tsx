@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/form";
 import { CartItem, CheckoutFormData } from "@/schemas/checkout";
 import { Loader } from "lucide-react"; // For loading spinner
+import Link from "next/link";
 
 interface OrderSummaryProps {
   form: UseFormReturn<CheckoutFormData>;
@@ -73,10 +74,9 @@ export function OrderSummary({
         </div>
 
         <div className="flex justify-between text-sm">
-          <span className="text-gray-600">Shipping</span>
+          <span className="text-gray-600">Shipping Charge</span>
           <div className="text-right">
             <div className="text-gray-900">
-              Delivery Charge:{" "}
               <span className="text-red-600 font-medium">
                 {deliveryCharge.toFixed(2)} AED
               </span>
@@ -122,25 +122,30 @@ export function OrderSummary({
           control={form.control}
           name="agreeToTerms"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className="mt-1"
-                  disabled={isSubmitting}
-                />
-              </FormControl>
-              <FormLabel className="text-sm text-gray-700 leading-relaxed font-normal">
-                I have read and agree to the website{" "}
-                <a
-                  href="/terms-and-conditions"
-                  className="text-blue-600 hover:text-blue-800 underline"
-                >
-                  terms and conditions
-                </a>{" "}
-                *
-              </FormLabel>
+            <FormItem>
+              <div className="flex flex-row items-start space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    className="mt-1"
+                    disabled={isSubmitting}
+                  />
+                </FormControl>
+                <FormLabel className="text-sm text-gray-700 leading-relaxed font-normal">
+                  <p>
+                    {" "}
+                    <span>I have read and agree to the website </span>
+                    <Link
+                      href="/terms-and-conditions"
+                      className="text-blue-600 hover:text-blue-800 underline"
+                    >
+                      terms and conditions
+                    </Link>
+                    <span className="text-red-600">*</span>
+                  </p>
+                </FormLabel>
+              </div>
               <FormMessage />
             </FormItem>
           )}

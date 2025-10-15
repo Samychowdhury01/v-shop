@@ -13,6 +13,8 @@ import { useLocalCart } from "@/hooks/use-local-cart";
 import toast from "react-hot-toast";
 import { OrderPayload } from "@/types/order";
 import { submitOrder } from "../action/checkout-action";
+import { buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
 
 export function CheckoutFormWrapper() {
   const router = useRouter();
@@ -38,6 +40,7 @@ export function CheckoutFormWrapper() {
       subtotal: 0,
       deliveryCharge: 30,
       total: 0,
+      status: "PENDING",
     },
   });
 
@@ -76,12 +79,13 @@ export function CheckoutFormWrapper() {
         subtotal,
         deliveryCharge,
         total,
+        status: "PENDING",
       };
 
       // Submit order to API
       const response = await submitOrder(orderPayload);
       const result = await response.json();
-      
+
       // Success handling
       toast.success("Your order has been placed successfully");
 
@@ -123,12 +127,14 @@ export function CheckoutFormWrapper() {
         <p className="text-gray-600 mb-8">
           Add some items to your cart before checking out
         </p>
-        <button
-          onClick={() => router.push("/shop")}
-          className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        <Link
+          href="/products"
+          className={`${buttonVariants({
+            variant: "default",
+          })}`}
         >
           Continue Shopping
-        </button>
+        </Link>
       </div>
     );
   }

@@ -1,0 +1,1 @@
+export const checkoutStatus = ["PENDING", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"] as const;

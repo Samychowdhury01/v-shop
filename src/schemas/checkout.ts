@@ -1,4 +1,5 @@
 // @/schemas/checkout.ts
+import { checkoutStatus } from "@/lib/utils/constant";
 import { z } from "zod";
 
 export const cartItemSchema = z.object({
@@ -33,7 +34,10 @@ export const checkoutFormSchema = z.object({
   subtotal: z.number(),
   deliveryCharge: z.number(),
   total: z.number(),
+  status: z.enum(checkoutStatus),
 });
+
 
 export type CartItem = z.infer<typeof cartItemSchema>;
 export type CheckoutFormData = z.infer<typeof checkoutFormSchema>;
+export type CheckoutStatus = (typeof checkoutStatus)[number];

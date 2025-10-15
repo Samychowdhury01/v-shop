@@ -66,6 +66,8 @@ export default async function BrandProductsPage({
 }: BrandProductsPageProps) {
   const { categorySlug, brandSlug } = await params;
   const brandProducts = await fetchProductsByBrand(categorySlug, brandSlug);
+
+  console.log(brandProducts, "brand products")
   // Fetch product data
   const data = await getProductData();
   
