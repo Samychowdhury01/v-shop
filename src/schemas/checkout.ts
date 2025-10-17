@@ -35,6 +35,7 @@ export const checkoutFormSchema = z.object({
   deliveryCharge: z.number(),
   total: z.number(),
   status: z.enum(checkoutStatus),
+  orderId: z.string(),
 });
 
 

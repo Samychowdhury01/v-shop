@@ -15,6 +15,7 @@ import { OrderPayload } from "@/types/order";
 import { submitOrder } from "../action/checkout-action";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
+import generateOrderId from "@/lib/utils/generate-orderId";
 
 export function CheckoutFormWrapper() {
   const router = useRouter();
@@ -41,6 +42,7 @@ export function CheckoutFormWrapper() {
       deliveryCharge: 30,
       total: 0,
       status: "PENDING",
+      orderId: "",
     },
   });
 
@@ -80,11 +82,11 @@ export function CheckoutFormWrapper() {
         deliveryCharge,
         total,
         status: "PENDING",
+        orderId: generateOrderId()
       };
 
       // Submit order to API
-      const response = await submitOrder(orderPayload);
-      const result = await response.json();
+      const result = await submitOrder(orderPayload);
 
       // Success handling
       toast.success("Your order has been placed successfully");
