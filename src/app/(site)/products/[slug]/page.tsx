@@ -1,20 +1,16 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import ProductDetailsClient from "./_components/product-details-client";
 import ProductDetailsServer from "./_components/product-details-server";
 import ProductTabsClient from "./_components/product-tabs-client";
-import { products } from "@/data/products";
-
-// Fetch product by slug
-async function getProductBySlug(slug: string) {
-  const product = products.find((p) => p.slug === slug);
-  return product;
-}
+import { Product } from "@/types/products";
+import { fetchProductBySlug, fetchProducts } from "@/lib/utils/fetch-products";
+import ProductImages from "./_components/product-images";
 
 // Generate static params for all product slugs
 export async function generateStaticParams() {
-  return products.map((product) => ({
+  const products = await fetchProducts();
+  return products.map((product: Product) => ({
     slug: product.slug,
   }));
 }
@@ -26,7 +22,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const product = await fetchProductBySlug(slug);
 
   if (!product) {
     return {
@@ -36,17 +32,15 @@ export async function generateMetadata({
   }
 
   return {
-    title: `Buy ${product.name} in UAE at the Best Price | Vape Dubai Hub`,
-    description: `Buy ${product.name} in UAE with thousands of puffs, multiple flavors, rechargeable battery, and free shipping over AED 300. Order now from Vape Dubai Hub.`,
-    keywords: `${product.name}, disposable vape UAE, vape Dubai, rechargeable vape, salt nicotine`,
+    title: `Buy ${product.productName} in UAE at the Best Price | Vape Dubai Hub`,
+    description: `Buy ${product.productName} in UAE with thousands of puffs, multiple flavors, rechargeable battery, and free shipping over AED 300. Order now from Vape Dubai Hub.`,
+    keywords: `${product.productName}, disposable vape UAE, vape Dubai, rechargeable vape, salt nicotine`,
     openGraph: {
-      title: `${product.name} - Premium Puffs | UAE`,
+      title: `${product.productName} - Premium Puffs | UAE`,
       description:
-        product.description ||
+        product.productShortDescription ||
         `Premium disposable vape with multiple flavors and rechargeable battery. Free shipping in UAE.`,
-      images: product.images?.[0]
-        ? [product.images[0]]
-        : ["/colorful-disposable-vape-devices-in-different-colo.jpg"],
+      images: product.thumbnailImage,
     },
   };
 }
@@ -59,7 +53,7 @@ export default async function ProductDetailsPage({
   params,
 }: ProductDetailsPageProps) {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const product = await fetchProductBySlug(slug);
 
   if (!product) {
     notFound();
@@ -73,7 +67,7 @@ export default async function ProductDetailsPage({
             <div className="animate-pulse bg-gray-200 aspect-square rounded-lg" />
           }
         >
-          <ProductDetailsClient productData={product} />
+          <ProductImages productData={product} />
         </Suspense>
 
         <ProductDetailsServer product={product} />

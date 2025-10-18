@@ -65,9 +65,26 @@ export async function fetchProductsByBrand(
 }
 
 // Fetch single product
+// Fetch single product
 export async function fetchProductBySlug(
   slug: string
 ): Promise<Product | null> {
-  const allProducts = await fetchProducts();
-  return allProducts.find((product) => product.slug === slug) || null;
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/products/${slug}`
+    );
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        return null;
+      }
+      throw new Error(`Failed to fetch product: ${response.statusText}`);
+    }
+
+    const product: Product = await response.json();
+    return product;
+  } catch (error) {
+    console.error(`Error fetching product with slug "${slug}":`, error);
+    return null;
+  }
 }

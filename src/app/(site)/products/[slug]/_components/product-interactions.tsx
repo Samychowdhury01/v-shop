@@ -4,13 +4,14 @@ import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  ProductOptions,
   ProductOptionsSelector,
   ProductSelection,
   validateProductSelection,
 } from "../../_components/product-options-selector";
 import { useCart } from "@/lib/provider/cart-context";
 import { Product } from "@/types/products";
+import toast from "react-hot-toast";
+import { useProductContext } from "@/lib/provider/product-context";
 
 interface ProductInteractionsProps {
   product: Product;
@@ -21,14 +22,9 @@ export default function ProductInteractions({
 }: ProductInteractionsProps) {
   const [quantity, setQuantity] = useState(1);
   const [selectedOptions, setSelectedOptions] = useState<ProductSelection>({});
+  const [resetTrigger, setResetTrigger] = useState(0);
   const { addToCart, setCartSheetOpen } = useCart();
-
-  const productOptions: ProductOptions = {
-    flavors: product.flavors,
-    options: product?.options,
-    colors: product?.colors,
-    // nicotineLevels: product?.nicotineLevels,
-  };
+  const { setSelectedFlavor } = useProductContext();
 
   const handleQuantityChange = (change: number) => {
     setQuantity(Math.max(1, quantity + change));
@@ -36,62 +32,81 @@ export default function ProductInteractions({
 
   const handleSelectionChange = (selection: ProductSelection) => {
     setSelectedOptions(selection);
+    // Update context when flavor changes
+    if (selection.flavor !== selectedOptions.flavor) {
+      setSelectedFlavor(selection.flavor);
+    }
+  };
+
+  const resetSelections = () => {
+    setQuantity(1);
+    setSelectedOptions({});
+    setResetTrigger((prev) => prev + 1);
+    setSelectedFlavor(undefined);
   };
 
   const handleAddToCart = () => {
     // Validate that all required options are selected
-    const isValid = validateProductSelection(productOptions, selectedOptions);
+    const isValid = validateProductSelection(product, selectedOptions);
     
     if (!isValid) {
-      // toast.error("Please select all required options");
+      toast.error("Please select all required options");
       return;
     }
 
-    // Create a unique ID for this cart item based on product ID and selected options
-    const optionString = [
-      selectedOptions.flavor,
-      selectedOptions.color,
-      selectedOptions.option,
-      selectedOptions.nicotineLevel,
-    ]
-      .filter(Boolean)
-      .join("-");
-    
-    const cartItemId = `${product.id}-${optionString || "default"}`;
-
-    // Add items to cart based on quantity
-    for (let i = 0; i < quantity; i++) {
-      addToCart({
-        id: cartItemId,
-        productId: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.images[0],
-        flavor: selectedOptions.flavor,
-        color: selectedOptions.color,
-        option: selectedOptions.option,
-        nicotineLevel: selectedOptions.nicotineLevel,
-      });
+    // Find selected flavor image or use thumbnail
+    let image = product.thumbnailImage || "/placeholder.svg";
+    if (selectedOptions.flavor && product.flavours) {
+      const selectedFlavorData = product.flavours.find(
+        (f) => f.flavor === selectedOptions.flavor
+      );
+      if (selectedFlavorData?.flavorImage) {
+        image = selectedFlavorData.flavorImage;
+      }
     }
 
+    // Create a unique ID for this cart item based on product ID and selected options
+    const uniqueKey = `${product._id}-${selectedOptions.flavor || ""}-${
+      selectedOptions.color || ""
+    }-${selectedOptions.option || ""}-${selectedOptions.nicotineLevel || ""}`;
+
+    const orderObject = {
+      id: uniqueKey,
+      productId: product._id,
+      name: product.productName,
+      price: product?.offer?.isActive
+        ? product?.offer?.offerPrice
+        : product.price,
+      image: image,
+      flavor: selectedOptions.flavor,
+      color: selectedOptions.color,
+      option: selectedOptions.option,
+      nicotineLevel: selectedOptions.nicotineLevel,
+      quantity: quantity, // Pass the quantity directly
+    };
+    
+    // Add the item to cart with the specified quantity
+    addToCart(orderObject);
+
     // Show success message
-    // toast.success(`Added ${quantity} ${product.name} to cart`);
+    toast.success(`Added ${quantity} ${product.productName} to cart`);
 
     // Open cart sheet
     setCartSheetOpen(true);
 
-    // Reset quantity after adding to cart
-    setQuantity(1);
+    // Reset after adding to cart
+    resetSelections();
   };
 
   // Check if all required options are selected
-  const isAddToCartDisabled = !validateProductSelection(productOptions, selectedOptions);
+  const isAddToCartDisabled = !validateProductSelection(product, selectedOptions);
 
   return (
     <div className="space-y-4">
       <ProductOptionsSelector
-        productOptions={productOptions}
+        productOptions={product}
         onSelectionChange={handleSelectionChange}
+        resetTrigger={resetTrigger}
       />
 
       <div className="flex items-center gap-4">
@@ -101,6 +116,7 @@ export default function ProductInteractions({
             className="h-10 w-10"
             variant="outline"
             size="icon"
+            disabled={quantity <= 1}
           >
             <Minus className="h-4 w-4" />
           </Button>
@@ -117,7 +133,7 @@ export default function ProductInteractions({
 
         <Button
           onClick={handleAddToCart}
-          className="flex-1"
+          className="flex-1 bg-black hover:bg-gray-800 text-white"
           disabled={isAddToCartDisabled}
         >
           ADD TO CART

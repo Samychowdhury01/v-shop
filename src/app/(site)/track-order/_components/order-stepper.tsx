@@ -51,7 +51,7 @@ export function StatusStepper({ currentStatus }: StatusStepperProps) {
           const Icon = config.icon
           const isCompleted = index < currentIndex
           const isActive = status === currentStatus && !isCancelled
-          const isDisabled = index > currentIndex || isCancelled
+          // const isDisabled = index > currentIndex || isCancelled
 
           return (
             <div key={status} className="flex flex-col items-center flex-1">

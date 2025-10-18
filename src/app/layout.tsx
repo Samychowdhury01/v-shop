@@ -4,6 +4,7 @@ import "./globals.css";
 import { Suspense } from "react";
 import { AgeVerificationDialog } from "@/components/age-verification-dialog";
 import { Toaster } from "react-hot-toast";
+import { ProductProvider } from "@/lib/provider/product-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,11 +31,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Suspense fallback={null}>
-          <AgeVerificationDialog />
-          <Toaster />
-        </Suspense>
-        {children}
+        <ProductProvider>
+          <Suspense fallback={null}>
+            <AgeVerificationDialog />
+            <Toaster />
+          </Suspense>
+          {children}
+        </ProductProvider>
       </body>
     </html>
   );
